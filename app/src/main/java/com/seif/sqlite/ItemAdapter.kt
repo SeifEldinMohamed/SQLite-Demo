@@ -2,18 +2,16 @@ package com.seif.sqlite
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.seif.sqlite.databinding.ItemRowBinding
-import kotlinx.android.synthetic.main.item_row.view.*
+import com.seif.sqlite.models.EmpModelClass
 
 
-class ItemAdapter(val context: Context, val items: ArrayList<EmpModelClass>) :
+class ItemAdapter(private val context: Context, private val items: ArrayList<EmpModelClass>) :
     RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
     /**
      * Inflates the item views which is designed in the XML layout file
@@ -38,8 +36,7 @@ class ItemAdapter(val context: Context, val items: ArrayList<EmpModelClass>) :
      * layout file.
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        val item = items.get(position)
+        val item = items[position]
 
         holder.tvName.text = item.name
         holder.tvEmail.text = item.email
@@ -55,6 +52,18 @@ class ItemAdapter(val context: Context, val items: ArrayList<EmpModelClass>) :
         } else {
             holder.llMain.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
         }
+
+        holder.ivEdit.setOnClickListener { view ->
+            if (context is MainActivity) {
+                context.updateRecordDialog(item)
+            }
+        }
+        holder.ivDelete.setOnClickListener { view ->
+            if (context is MainActivity) {
+                context.deleteRecordAlertDialog(item)
+            }
+        }
+
     }
 
     /**
@@ -68,11 +77,8 @@ class ItemAdapter(val context: Context, val items: ArrayList<EmpModelClass>) :
      * A ViewHolder describes an item view and metadata about its place within the RecyclerView.
      */
 
-
     class ViewHolder(private val binding:ItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
         // Holds the TextView that will add each item to
-
-
         val llMain: LinearLayout = binding.llMain
         var tvName: TextView = binding.tvName
         var tvEmail: TextView = binding.tvEmail

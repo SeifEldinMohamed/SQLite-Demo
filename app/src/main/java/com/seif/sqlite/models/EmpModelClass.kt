@@ -1,4 +1,4 @@
-package com.seif.sqlite
+package com.seif.sqlite.models
 
 //creating a Data Model Class
 class EmpModelClass(val id: Int, val name: String, val email: String)
